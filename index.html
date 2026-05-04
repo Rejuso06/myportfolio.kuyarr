@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KUYA RR – Visual Stories from Sea to Screen</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy: #0a1628;
+    --deep: #0d1f3c;
+    --ocean: #1a3a5c;
+    --tide: #1e5f8e;
+    --sky: #3a9bd5;
+    --foam: #a8d8ea;
+    --gold: #e8c56a;
+    --cream: #f5f0e8;
+    --white: #ffffff;
+    --text-dim: rgba(245,240,232,0.6);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--cream);
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(10,22,40,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(232,197,106,0.15);
+  }
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--cream); text-decoration: none;
+    font-size: 0.85rem; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; overflow: hidden;
+    padding: 8rem 4rem 4rem;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 40%, rgba(26,90,140,0.45) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 40% at 20% 70%, rgba(58,155,213,0.2) 0%, transparent 60%),
+      linear-gradient(160deg, #0a1628 0%, #0d2144 50%, #0a1628 100%);
+  }
+
+  /* animated wave lines */
+  .waves {
+    position: absolute; bottom: 0; left: 0; right: 0; z-index: 1;
+    height: 180px; overflow: hidden;
+  }
+  .wave {
+    position: absolute; bottom: 0; width: 200%; height: 100%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120'%3E%3Cpath fill='%230a1628' fill-opacity='1' d='M0,64L60,58.7C120,53,240,43,360,48C480,53,600,75,720,80C840,85,960,75,1080,64C1200,53,1320,43,1440,42.7L1440,120L0,120Z'/%3E%3C/svg%3E") repeat-x bottom;
+    background-size: 50% 100%;
+    animation: waveMove 8s linear infinite;
+    opacity: 0.6;
+  }
+  .wave:nth-child(2) { animation-duration: 12s; animation-direction: reverse; opacity: 0.3; }
+  @keyframes waveMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  .hero-content { position: relative; z-index: 2; max-width: 800px; }
+
+  .hero-tag {
+    font-size: 0.78rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .hero-tag::before {
+    content: ''; display: inline-block;
+    width: 40px; height: 1px; background: var(--gold);
+  }
+
+  h1.hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 900;
+    line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 1.2rem;
+  }
+  h1.hero-title span { color: var(--gold); font-style: italic; }
+
+  .hero-sub {
+    font-size: 1.1rem; font-weight: 300;
+    color: var(--text-dim); line-height: 1.7;
+    max-width: 560px; margin-bottom: 2rem;
+  }
+
+  .hero-pills {
+    display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 3rem;
+  }
+  .pill {
+    padding: 0.4rem 1.1rem;
+    border: 1px solid rgba(232,197,106,0.4);
+    border-radius: 100px;
+    font-size: 0.82rem; color: var(--gold);
+    background: rgba(232,197,106,0.08);
+    letter-spacing: 0.05em;
+  }
+
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: var(--gold); color: var(--navy);
+    padding: 0.85rem 2rem; border-radius: 4px;
+    font-weight: 600; font-size: 0.9rem; letter-spacing: 0.05em;
+    text-decoration: none; text-transform: uppercase;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .hero-cta:hover { background: #f0d07a; transform: translateY(-2px); }
+
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; right: 4rem; z-index: 2;
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: var(--text-dim); font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 1px; height: 60px; background: linear-gradient(to bottom, var(--text-dim), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse { 0%,100%{opacity:0.4;transform:scaleY(1)} 50%{opacity:1;transform:scaleY(1.1)} }
+
+  /* ─── SECTION BASE ─── */
+  section { padding: 6rem 4rem; }
+  .section-label {
+    font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .section-label::after {
+    content: ''; flex: 1; max-width: 60px;
+    height: 1px; background: var(--gold); opacity: 0.5;
+  }
+  h2.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700; line-height: 1.15;
+    color: var(--white); margin-bottom: 1.5rem;
+  }
+  h2.section-title em { color: var(--gold); font-style: italic; }
+
+  /* ─── ABOUT ─── */
+  #about {
+    background: var(--deep);
+    position: relative; overflow: hidden;
+  }
+  #about::before {
+    content: 'KUYA RR';
+    position: absolute; right: -2rem; top: 50%; transform: translateY(-50%);
+    font-family: 'Bebas Neue', sans-serif; font-size: 18vw;
+    color: rgba(255,255,255,0.02); pointer-events: none; white-space: nowrap;
+  }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
+    align-items: center; max-width: 1200px; margin: 0 auto;
+  }
+  .about-img-wrap {
+    position: relative;
+  }
+  .about-img-frame {
+    width: 100%; aspect-ratio: 3/4;
+    border-radius: 4px;
+    background: linear-gradient(135deg, var(--ocean), var(--tide));
+    position: relative; overflow: hidden;
+    border: 1px solid rgba(58,155,213,0.3);
+  }
+  .about-img-frame::after {
+    content: '';
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    font-size: 5rem; opacity: 0.15;
+  }
+  .about-img-badge {
+    position: absolute; bottom: -1.5rem; right: -1.5rem;
+    background: var(--gold); color: var(--navy);
+    padding: 1rem 1.5rem; border-radius: 4px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem; letter-spacing: 0.1em;
+    line-height: 1.3;
+  }
+  .about-img-accent {
+    position: absolute; top: -1rem; left: -1rem;
+    width: 60px; height: 60px;
+    border-top: 3px solid var(--gold);
+    border-left: 3px solid var(--gold);
+  }
+
+  .about-text p {
+    font-size: 1rem; line-height: 1.85; color: var(--text-dim);
+    margin-bottom: 1.25rem;
+  }
+  .about-text p strong { color: var(--cream); font-weight: 500; }
+
+  .about-stats {
+    display: flex; gap: 2.5rem; margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem; font-weight: 700; color: var(--gold);
+  }
+  .stat-label {
+    font-size: 0.78rem; color: var(--text-dim);
+    letter-spacing: 0.05em; margin-top: 0.2rem;
+  }
+
+  /* ─── SERVICES ─── */
+  #services { background: var(--navy); }
+  .services-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem; max-width: 1200px; margin: 3rem auto 0;
+  }
+  .service-card {
+    background: var(--deep);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 6px; padding: 2.5rem 2rem;
+    position: relative; overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(58,155,213,0.06) 0%, transparent 60%);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .service-card:hover { transform: translateY(-6px); border-color: rgba(232,197,106,0.3); }
+  .service-card:hover::before { opacity: 1; }
+
+  .service-icon {
+    font-size: 2.4rem; margin-bottom: 1.5rem;
+    display: block;
+  }
+  .service-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 700;
+    color: var(--white); margin-bottom: 1rem;
+  }
+  .service-card p {
+    font-size: 0.9rem; color: var(--text-dim);
+    line-height: 1.7; margin-bottom: 1.25rem;
+  }
+  .service-list { list-style: none; }
+  .service-list li {
+    font-size: 0.83rem; color: var(--text-dim);
+    padding: 0.3rem 0;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .service-list li::before {
+    content: '—'; color: var(--gold); opacity: 0.7; font-size: 0.7rem;
+  }
+
+  /* ─── PORTFOLIO ─── */
+  #portfolio {
+    background: var(--deep);
+    overflow: hidden;
+  }
+  .portfolio-header { max-width: 1200px; margin: 0 auto 3rem; }
+
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    gap: 1.2rem;
+    max-width: 1200px; margin: 0 auto;
+  }
+
+  .port-card {
+    border-radius: 6px; overflow: hidden;
+    position: relative; cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: transform 0.3s;
+  }
+  .port-card:hover { transform: scale(1.02); }
+  .port-card:first-child { grid-column: span 2; }
+
+  .port-thumb {
+    aspect-ratio: 16/10;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem; position: relative;
+    overflow: hidden;
+  }
+  .port-card:first-child .port-thumb { aspect-ratio: 16/9; }
+
+  .port-thumb-photo { background: linear-gradient(135deg, #1a3a5c, #1e5f8e); }
+  .port-thumb-video { background: linear-gradient(135deg, #1a2840, #0d3358); }
+  .port-thumb-cruise { background: linear-gradient(135deg, #0a2033, #1a4060); }
+  .port-thumb-reel { background: linear-gradient(135deg, #15304a, #1e5070); }
+  .port-thumb-reel { background: linear-gradient(135deg, #15304a, #1e5070); }
+
+  .port-thumb::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(10,22,40,0.8) 0%, transparent 50%);
+  }
+  .port-thumb-emoji {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-55%);
+    font-size: 3.5rem; z-index: 1;
+    opacity: 0.4;
+  }
+
+  .port-info {
+    padding: 1.25rem 1.5rem;
+    background: rgba(13,31,60,0.95);
+  }
+  .port-info h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; color: var(--white); margin-bottom: 0.3rem;
+  }
+  .port-info p { font-size: 0.8rem; color: var(--text-dim); }
+
+  .port-tag {
+    position: absolute; top: 1rem; left: 1rem; z-index: 2;
+    background: var(--gold); color: var(--navy);
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
+    padding: 0.25rem 0.65rem; border-radius: 2px; text-transform: uppercase;
+  }
+
+  /* ─── YOUTUBE CALLOUT ─── */
+  #youtube {
+    background: linear-gradient(135deg, var(--ocean) 0%, var(--navy) 100%);
+    text-align: center;
+    padding: 5rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  #youtube::before {
+    content: '▶';
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+    font-size: 30vw; color: rgba(255,255,255,0.02);
+    pointer-events: none;
+  }
+  .yt-content { position: relative; z-index: 1; }
+  .yt-badge {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 0.5rem 1.2rem; border-radius: 100px;
+    font-size: 0.82rem; color: var(--foam);
+    margin-bottom: 1.5rem; letter-spacing: 0.05em;
+  }
+  .yt-badge span { color: #ff5050; font-size: 1rem; }
+  #youtube h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    color: var(--white); margin-bottom: 1rem;
+  }
+  #youtube p {
+    font-size: 1rem; color: var(--text-dim);
+    max-width: 540px; margin: 0 auto 2rem; line-height: 1.7;
+  }
+  .yt-btn {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: #ff4444; color: #fff;
+    padding: 0.85rem 2rem; border-radius: 4px;
+    font-weight: 600; font-size: 0.9rem;
+    text-decoration: none; letter-spacing: 0.04em;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .yt-btn:hover { background: #ff2222; transform: translateY(-2px); }
+
+  /* ─── CONTACT ─── */
+  #contact { background: var(--navy); }
+  .contact-inner {
+    max-width: 680px; margin: 0 auto; text-align: center;
+  }
+  .contact-inner p {
+    font-size: 1rem; color: var(--text-dim); line-height: 1.7;
+    margin-bottom: 3rem;
+  }
+  .contact-links {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;
+  }
+  .contact-link {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 4px; color: var(--cream);
+    text-decoration: none; font-size: 0.88rem;
+    transition: border-color 0.3s, background 0.3s, color 0.3s;
+  }
+  .contact-link:hover {
+    border-color: var(--gold); color: var(--gold);
+    background: rgba(232,197,106,0.06);
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--deep);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 2rem 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  footer p { font-size: 0.8rem; color: var(--text-dim); }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem; letter-spacing: 0.15em; color: var(--gold);
+  }
+
+  /* ─── ANIMATIONS ─── */
+  .fade-up {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  .fade-up:nth-child(2) { transition-delay: 0.1s; }
+  .fade-up:nth-child(3) { transition-delay: 0.2s; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 2rem; }
+    .nav-links { gap: 1.5rem; }
+    section { padding: 4rem 2rem; }
+    #hero { padding: 7rem 2rem 4rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .about-img-wrap { max-width: 340px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .portfolio-grid { grid-template-columns: 1fr; }
+    .port-card:first-child { grid-column: span 1; }
+    footer { flex-direction: column; text-align: center; }
+  }
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    h1.hero-title { font-size: 2.8rem; }
+    .about-stats { flex-direction: column; gap: 1.5rem; }
+  }
+  
+
+
+
+
+/* Slider */
+.slider {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.slides {
+  display: flex;
+  width: 400%;
+  height: 100%;
+  animation: slide 70s;
+}
+
+.slides img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Animation */
+@keyframes slide {
+  0% { transform: translateX(0%); }
+  25% { transform: translateX(-100%); }
+  50% { transform: translateX(-200%); }
+  75% { transform: translateX(-300%); }
+  100% { transform: translateX(-400%); }
+  
+ 
+
+ 
+
+}
+
+/* Emoji overlay */
+.port-thumb-emoji {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 6rem;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="logo">KUYA RR</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#youtube">YouTube</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="waves">
+    <div class="wave"></div>
+    <div class="wave"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-tag">Freelancer &amp; Content Creator</div>
+    <h1 class="hero-title">
+      Visual Stories<br/>from <span>Sea to Screen</span>
+    </h1>
+    <p class="hero-sub">
+      Capturing life through photography, video editing, and storytelling.
+      Follow my journey as a Cruise Ship Photographer and Content Creator,
+      sharing experiences, travel moments, and behind-the-scenes life at sea.
+    </p>
+    <div class="hero-pills">
+      <span class="pill">🎥 Video Editing</span>
+      <span class="pill">📸 Photography</span>
+      <span class="pill">🌎 Travel Content</span>
+      <span class="pill">📱 Content Creation</span>
+    </div>
+    <a href="#contact" class="hero-cta">Work With Me →</a>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+
+    <div class="about-img-wrap fade-up">
+      
+      <div class="about-img-accent"></div>
+
+      <div class="about-img-frame">
+
+  <!-- Slider Container -->
+  <div class="slider">
+    <div class="slides">
+      <img src="P1311.jpg" alt="Image 1">
+      <img src="P1312.jpg" alt="Image 2">
+      <img src="P1313.jpg" alt="Image 3">
+      <img src="P1314.jpg" alt="Image 4">
+      <img src="P1315.jpg" alt="Image 5">
+      <img src="P1311.jpg" alt="Image 1">
+      <img src="P01.JPG" alt="Image 2">
+      <img src="P02.JPG" alt="Image 3">
+      <img src="P03.JPG" alt="Image 4">
+      <img src="P04.JPG" alt="Image 5">
+      <img src="P1311.jpg" alt="Image 1">
+      <img src="P1312.jpg" alt="Image 2">
+      <img src="P1313.jpg" alt="Image 3">
+      <img src="P1314.jpg" alt="Image 4">
+      <img src="P1315.jpg" alt="Image 5">
+     
+    </div>
+  </div>
+
+  <!-- Emoji Overlay -->
+  <div class="port-thumb-emoji"></div>
+
+</div>
+
+
+
+      <div class="about-img-badge">
+        Cruise Ship<br/>Photographer
+      </div>
+    </div>
+    <div class="about-text">
+      <div class="section-label">About Me</div>
+      <h2 class="section-title">Hello, I'm <em>Rolly</em><br/>Rejuso Jr.</h2>
+      <p>
+        Also known as <strong>KUYA RR</strong> — a Photographer, Video Editor, and Content Creator
+        currently working onboard a cruise ship. I share the real experiences of working at sea,
+        traveling to different destinations, and creating visual stories.
+      </p>
+      <p>
+        I enjoy capturing moments through photography and video, then turning them into engaging
+        content that people can connect with. From planning a video shoot to editing the final
+        output, I handle the full creative process to make sure every project tells a story.
+      </p>
+      <p>
+        I also graduated with a <strong>Bachelor's Degree in Computer Science</strong>, which gives me
+        basic knowledge in front-end web development and digital platforms.
+      </p>
+      <div class="about-stats">
+        <div>
+          <div class="stat-num">4+</div>
+          <div class="stat-label">Services Offered</div>
+        </div>
+        <div>
+          <div class="stat-num">🌊</div>
+          <div class="stat-label">Life at Sea</div>
+        </div>
+        <div>
+          <div class="stat-num">BS</div>
+          <div class="stat-label">Computer Science</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-label">What I Offer</div>
+    <h2 class="section-title">Services</h2>
+    <div class="services-grid">
+
+      <div class="service-card fade-up">
+        <span class="service-icon">🎬</span>
+        <h3>Video Editing</h3>
+        <p>Engaging video content for vlogs, social media, and YouTube — storytelling-first editing with style.</p>
+        <ul class="service-list">
+          <li>YouTube vlog editing</li>
+          <li>Social media videos (Reels, Shorts, TikTok)</li>
+          <li>Basic color correction</li>
+          <li>Music and transitions</li>
+          <li>Storytelling style editing</li>
+        </ul>
+      </div>
+
+      <div class="service-card fade-up">
+        <span class="service-icon">📸</span>
+        <h3>Photography</h3>
+        <p>Professional photography capturing moments, lifestyle, and travel — with a cruise ship perspective.</p>
+        <ul class="service-list">
+          <li>Portrait photography</li>
+          <li>Travel photography</li>
+          <li>Event photography</li>
+          <li>Lifestyle photography</li>
+        </ul>
+      </div>
+
+      <div class="service-card fade-up">
+        <span class="service-icon">📱</span>
+        <h3>Content Creation</h3>
+        <p>Helping create and manage engaging digital content that connects with your audience.</p>
+        <ul class="service-list">
+          <li>Content planning and ideas</li>
+          <li>Social media content creation</li>
+          <li>Caption writing</li>
+          <li>Content strategy for vlogs</li>
+        </ul>
+      </div>
+
+      <div class="service-card fade-up" style="grid-column: span 3; display:flex; gap:2rem; align-items:flex-start;">
+        <span class="service-icon" style="flex-shrink:0;">💻</span>
+        <div>
+          <h3>Basic Web Development</h3>
+          <p>With a CS background, I can assist with front-end design and help present your brand effectively online. Ideal for simple, clean web presence projects.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="portfolio-header">
+    <div class="section-label">Creative Work</div>
+    <h2 class="section-title">Portfolio</h2>
+  </div>
+
+  <div class="portfolio-grid">
+
+    <div class="port-card fade-up">
+      <span class="port-tag">Photography</span>
+      <div class="port-thumb port-thumb-photo">
+        <div class="port-thumb-emoji">📸</div>
+      </div>
+      <div class="port-info">
+        <h4>Travel & Lifestyle Photography</h4>
+        <p>Portraits, travel, and lifestyle captured during my cruise ship journey.</p>
+      </div>
+    </div>
+
+    <div class="port-card fade-up">
+      <span class="port-tag">Video</span>
+      <div class="port-thumb port-thumb-video">
+        <div class="port-thumb-emoji">🎥</div>
+      </div>
+      <div class="port-info">
+        <h4>YouTube Vlogs</h4>
+        <p>Edited vlog content — travel moments and life at sea.</p>
+      </div>
+    </div>
+
+    <div class="port-card fade-up">
+      <span class="port-tag">Behind the Scenes</span>
+      <div class="port-thumb port-thumb-cruise">
+        <div class="port-thumb-emoji">🚢</div>
+      </div>
+      <div class="port-info">
+        <h4>Cruise Ship Life</h4>
+        <p>Behind-the-scenes moments from working onboard at sea.</p>
+      </div>
+    </div>
+
+    <div class="port-card fade-up">
+      <span class="port-tag">Social Media</span>
+      <div class="port-thumb port-thumb-reel">
+        <div class="port-thumb-emoji">▶️</div>
+      </div>
+      <div class="port-info">
+        <h4>Reels & Short-Form Videos</h4>
+        <p>Engaging short-form content for Instagram, TikTok, and YouTube Shorts.</p>
+      </div>
+    </div>
+
+    <div class="port-card fade-up">
+      <span class="port-tag">Front End Dev.</span>
+      <div class="port-thumb port-thumb-reel">
+        <div class="port-thumb-emoji"> </div>
+      </div>
+      <div class="port-info">
+        <h4>Websites and Web applications</h4>
+        <p>A front-end developer builds the user-facing portion of websites and applications, creating interactive, responsive interfaces using HTML, CSS, and JavaScript.</p>
+      </div>
+    </div>
+
+
+
+
+
+  </div>
+</section>
+
+<!-- YOUTUBE CALLOUT -->
+<section id="youtube">
+  <div class="yt-content">
+    <div class="yt-badge"><span>▶</span> Watch on YouTube</div>
+    <h2>KUYA RR – Buhay Photographer<br/>sa Cruise Ship</h2>
+    <p>
+      I document my life as a photographer working at sea — behind-the-scenes experiences,
+      travel moments, and the reality of working on a cruise ship.
+    </p>
+    <a href="https://www.youtube.com/@RollyRejuso" target="_blank" rel="noopener" class="yt-btn">
+      ▶ Visit My Channel
+    </a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-title">Let's Work <em>Together</em></h2>
+    <p>
+      Looking for a video editor, photographer, or content creator? I'd love to hear about
+      your project and how we can create something meaningful together.
+    </p>
+    <div class="contact-links">
+      <a href="mailto:rejusorolly1999@email.com" class="contact-link">✉️ Send an Email</a>
+      <a href="https://www.youtube.com/@RollyRejuso" target="_blank" rel="noopener" class="contact-link">▶ YouTube</a>
+      <a href="http://instagram.com/iamkuyarr/" class="contact-link">📸 Instagram</a>
+      <a href="https://www.tiktok.com/@kuyarr" class="contact-link">🎵 TikTok</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">KUYA RR</span>
+  <p>© 2025 Rolly Rejuso Jr. — Visual Stories from Sea to Screen</p>
+  <p>🎥 Video Editing · 📸 Photography · 🌎 Travel Content</p>
+</footer>
+
+<script>
+  // Intersection Observer for fade-up animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Services card — fix span-3 on small screens
+  function fixServices() {
+    const wide = document.querySelector('.service-card[style*="span 3"]');
+    if (!wide) return;
+    if (window.innerWidth < 900) {
+      wide.style.gridColumn = 'span 1';
+    } else {
+      wide.style.gridColumn = 'span 3';
+    }
+  }
+  window.addEventListener('resize', fixServices);
+  fixServices();
+</script>
+
+</body>
+</html>
